@@ -31,12 +31,29 @@ const typeDefs = gql`
   }
 
   type Query {
+    me: User
     users: [User]
     user(username: String!): User
     thoughts(username: String): [Thought]
     thought(_id: ID!): Thought
   }
+
+  type Mutation {
+    login(email: String!, password: String!): Auth
+    addUser(username: String!, email: String!, password: String!): Auth
+    addThought(thoughtText: String!): Thought
+    addReaction(thoughtId: ID!, reactionBody: String!): Thought
+    addFriend(friendId: ID!): User
+  }
+
+  type Auth {
+    token: ID!
+    user: User
+  }
 `;
+// Note that addReaction() will return the parent Thought instead of the newly created Reaction. 
+// This is because the front end will ultimately track changes on the thought level, not the reaction level.
+
 
 // export the typeDefs
 module.exports = typeDefs;
